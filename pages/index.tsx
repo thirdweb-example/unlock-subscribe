@@ -8,21 +8,28 @@ import {
 } from "@thirdweb-dev/react";
 import type { NextPage } from "next";
 import styles from "../styles/Theme.module.css";
-import { useState } from "react";
+
+export const contractAddress = "0xea12d1cF1Aa65de2a5f1840Cd04d28219413b445";
 
 const Home: NextPage = () => {
+  // Currently connected wallet address
   const address = useAddress();
-  const contractAddress = "0xea12d1cF1Aa65de2a5f1840Cd04d28219413b445";
+
+  // Get the Lock contract we deployed
   const { contract } = useContract(contractAddress);
-  const {
-    data: subscribed,
-    isLoading,
-    error,
-  } = useContractRead(contract, "getHasValidKey", address);
+
+  // Determine whether the connected wallet address has a valid subscription
+  const { data: subscribed, isLoading } = useContractRead(
+    contract,
+    "getHasValidKey",
+    address
+  );
+
+  // Read the duration of a subscription
   const { data: expirationDuration, isLoading: expirationLoading } =
     useContractRead(contract, "expirationDuration");
-  console.log(expirationDuration);
-  const [isSubscribed, setSubscribed] = useState(subscribed);
+
+  // Function to purchase a subscription NFT on the Lock contract
   const { mutateAsync: purchase } = useContractWrite(contract, "purchase");
   const call = async () => {
     try {
@@ -34,7 +41,6 @@ const Home: NextPage = () => {
         [0],
       ]);
       console.info("contract call success", data);
-      setSubscribed;
     } catch (err) {
       console.error("contract call failure", err);
     }
