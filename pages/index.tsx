@@ -41,7 +41,7 @@ const Home: NextPage = () => {
     try {
       console.log("price: " + keyPrice);
       const data = await purchase([
-        [0],
+        [keyPrice],
         [address],
         [address],
         [address],
