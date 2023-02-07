@@ -29,6 +29,7 @@ const Home: NextPage = () => {
   const { data: expirationDuration, isLoading: expirationLoading } =
     useContractRead(contract, "expirationDuration");
 
+  // Read the price of a subscription
   const { data: keyPrice, isLoading: keyLoading } = useContractRead(
     contract,
     "keyPrice"
