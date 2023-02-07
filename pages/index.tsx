@@ -9,7 +9,7 @@ import {
 import type { NextPage } from "next";
 import styles from "../styles/Theme.module.css";
 
-export const contractAddress = "0xea12d1cF1Aa65de2a5f1840Cd04d28219413b445";
+export const contractAddress = "0x7cA97355B87E611312a6bA1E14743d904AC12F21";
 
 const Home: NextPage = () => {
   // Currently connected wallet address
@@ -29,16 +29,24 @@ const Home: NextPage = () => {
   const { data: expirationDuration, isLoading: expirationLoading } =
     useContractRead(contract, "expirationDuration");
 
+  // Read the price of a subscription
+  const { data: keyPrice, isLoading: keyLoading } = useContractRead(
+    contract,
+    "keyPrice"
+  );
+
   // Function to purchase a subscription NFT on the Lock contract
   const { mutateAsync: purchase } = useContractWrite(contract, "purchase");
   const call = async () => {
     try {
+      console.log("price: " + keyPrice);
       const data = await purchase([
-        [0],
+        [keyPrice],
         [address],
-        ["0x0000000000000000000000000000000000000000"],
         [address],
-        [0],
+        [address],
+        [[]],
+        { value: keyPrice },
       ]);
       console.info("contract call success", data);
     } catch (err) {
