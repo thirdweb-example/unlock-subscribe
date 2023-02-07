@@ -9,7 +9,7 @@ import {
 import type { NextPage } from "next";
 import styles from "../styles/Theme.module.css";
 
-export const contractAddress = "0xea12d1cF1Aa65de2a5f1840Cd04d28219413b445";
+export const contractAddress = "<your-lock-contract-address>";
 
 const Home: NextPage = () => {
   // Currently connected wallet address
@@ -36,9 +36,10 @@ const Home: NextPage = () => {
       const data = await purchase([
         [0],
         [address],
-        ["0x0000000000000000000000000000000000000000"],
+        [address],
         [address],
         [0],
+        { value: 0 },
       ]);
       console.info("contract call success", data);
     } catch (err) {
