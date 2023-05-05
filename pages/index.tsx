@@ -22,7 +22,7 @@ const Home: NextPage = () => {
   const { data: subscribed, isLoading } = useContractRead(
     contract,
     "getHasValidKey",
-    address
+    [address]
   );
 
   // Read the duration of a subscription
@@ -33,14 +33,9 @@ const Home: NextPage = () => {
   const { mutateAsync: purchase } = useContractWrite(contract, "purchase");
   const call = async () => {
     try {
-      const data = await purchase([
-        [0],
-        [address],
-        [address],
-        [address],
-        [0],
-        { value: 0 },
-      ]);
+      const data = await purchase({
+        args: [[0], [address], [address], [address], [0], { value: 0 }],
+      });
       console.info("contract call success", data);
     } catch (err) {
       console.error("contract call failure", err);
@@ -96,8 +91,7 @@ const Home: NextPage = () => {
               <Web3Button
                 contractAddress={contractAddress}
                 className={styles.mainButton}
-                colorMode="dark"
-                accentColor="#F213A4"
+                theme="dark"
                 action={call}
               >
                 Subscribe
